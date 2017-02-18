@@ -1,0 +1,72 @@
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Runtime.Serialization.Formatters.Binary;
+
+namespace _05序列化和反序列化
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {            
+            #region 序列化
+            //将p这个对象传输给对方电脑
+            //Person p = new Person();
+            //p.Name = "张三";
+            //p.Age = 19;
+            //p.Gender = '男';
+            //using (FileStream fsWrite = new FileStream(@"C:\Users\Administrator\Desktop\004测试.txt", FileMode.OpenOrCreate, FileAccess.Write))
+            //{
+            //    BinaryFormatter bf = new BinaryFormatter();
+            //    bf.Serialize(fsWrite, p);
+            //}
+            //Console.WriteLine("序列化完成"); 
+            #endregion
+            
+            #region 反序列化
+            //接受对方发送过来的位二进制文件，反序列化为对象\
+            Person newP = null;
+            //这里千万不要忘记是两个“）”
+            using(FileStream fsRead = new FileStream(@"C:\Users\Administrator\Desktop\004测试.txt",FileMode.Open,FileAccess.Read))
+            {
+                BinaryFormatter bf= new BinaryFormatter();
+                newP = /*这里不要忘了强制类型转换*/(Person)bf.Deserialize(fsRead);
+            }
+            Console.WriteLine("反序列化成功");
+            Console.WriteLine(newP.Age);
+            Console.WriteLine(newP.Name);
+            Console.WriteLine(newP.Gender);
+            #endregion
+            Console.ReadKey();
+        }
+    }
+
+    [Serializable]
+    public class Person
+    {
+        private string _name;
+
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+        private char _gender;
+
+        public char Gender
+        {
+            get { return _gender; }
+            set { _gender = value; }
+        }
+
+        private int _age;
+
+        public int Age
+        {
+            get { return _age; }
+            set { _age = value; }
+        }
+    }
+}
